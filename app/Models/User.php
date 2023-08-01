@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Interfaces\ModelColumns;
+use App\Traits\DBFetch;
 use App\Traits\ModelHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -11,7 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements ModelColumns
 {
-    use HasApiTokens, HasFactory, Notifiable, ModelHelper;
+    use HasApiTokens, HasFactory, Notifiable, ModelHelper, DBFetch;
 
     private $main_table = 'users';
     private $pass = true;
@@ -28,6 +29,7 @@ class User extends Authenticatable implements ModelColumns
         'first_name',
         'last_name',
         'personal_id',
+        'institution_id',
         'citizenship',
         'birth_date',
         'email',
@@ -47,16 +49,19 @@ class User extends Authenticatable implements ModelColumns
         'remember_token',
     ];
 
-    public function isAdmin(){
+    public function isBeneficiary(){
         return $this->role === 1 ? true : false;
-    }
-
-    public function hasRole($role){
-        return $this->role === $role ? true : false;
     }
 
     public function menuPermission(){
         return $this->hasMany(RolePermission::class, 'role_id', 'role');
+    }
+
+    public function institution(){
+        return $this->hasOne(Institution::class, 'id', 'institution_id')
+            ->with(['content' => function($query){
+                $query->where('lang', 'ka');
+            }]);
     }
 
     public function menuItems(){
@@ -68,9 +73,5 @@ class User extends Authenticatable implements ModelColumns
         $ids = $this->menuPermission->pluck('menu_id')->toArray();
 
         return in_array($menu_id, $ids) ? true : false;
-    }
-
-    public function getAll($count = 50){
-        return self::latest()->paginate($count);
     }
 }

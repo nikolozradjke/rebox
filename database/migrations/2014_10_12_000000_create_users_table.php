@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('personal_id')->unique();
             $table->string('citizenship')->nullable();
-            $table->bigInteger('institution')->nullable();
+            $table->bigInteger('institution_id')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password');

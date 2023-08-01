@@ -23,6 +23,10 @@ trait ModelHelper
             'updated_at'
         ];
 
+        if($table == 'ideas'){
+            $not_needed_columns[] = 'user_id';
+        }
+
         if(str_contains($table, 'translate')){
             $not_needed_columns[] = 'parent_id';
         }
@@ -85,6 +89,9 @@ trait ModelHelper
 
                 self::$translates_class::insert($storable_data);
             }
+            if(property_exists(self::$current_class, 'menu') && $request->menus){
+                $this->menuStore($item, $request->menus);
+            }
             if(isset($new_pass)){
                 //პაროლის გაგზავნის ფუნქცია ადრესატთან
             }
@@ -136,6 +143,9 @@ trait ModelHelper
                     }
                 }
             }
+            if(property_exists(self::$current_class, 'menu') && $request->menus){
+                $this->menuStore($item, $request->menus, $update = true);
+            }
             return true;
         }
         return false;
@@ -168,4 +178,19 @@ trait ModelHelper
         return $item;
     }
 
+    private function menuStore($item, $permissions, $update = false) :void{
+        if($update){
+            $item->permissions()->delete();
+        }
+        $menu_permission = [];
+        foreach($permissions as $iterator => $menu){
+            $menu_permission[$iterator] = [
+                'menu_id' => $menu['id'],
+                'role_id' => $item->id
+            ];
+        }
+        if(!empty($menu_permission)){
+            $item->permissions()->insert($menu_permission);
+        }
+    }
 }
