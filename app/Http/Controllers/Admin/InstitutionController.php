@@ -27,7 +27,7 @@ class InstitutionController extends Controller
             false,
             $request->count
         );
-
+        
         return $this->getResponse();
     }
 
