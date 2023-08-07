@@ -1,11 +1,11 @@
-სერვერზე ატვირთვისას
+სერვერზე ატვირთვისას და ყველა განახლებაზე
 
 ბრძანება: 
 
-1) php artisan storage:link
+1) php artisan migrate
 2) php artisan db:seed
-3) php artisan migrate
 
+--------------------------------------------------------------
 
 .env ში ბაზის პარამეტრები:
 
@@ -17,12 +17,5 @@ DB_USERNAME=
 DB_PASSWORD=
 
 APP_URL=საიტის მისამართი
-
-
-გიტის ყველა პუშზე გასაშვები ბრძანებები:
-
-1) php artisan db:seed
-2) php artisan migrate
-
 
 
