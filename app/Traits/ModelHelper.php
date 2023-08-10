@@ -19,6 +19,7 @@ trait ModelHelper
             'password',
             'endpoint',
             'text',
+            'agreed',
             'created_at',
             'updated_at'
         ];

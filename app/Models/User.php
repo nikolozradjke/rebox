@@ -36,7 +36,8 @@ class User extends Authenticatable implements ModelColumns
         'password',
         'role',
         'lang',
-        'status'
+        'status',
+        'agreed'
     ];
 
     /**

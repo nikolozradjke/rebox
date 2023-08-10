@@ -24,6 +24,7 @@ return new class extends Migration
             $table->tinyInteger('role');
             $table->enum('lang',['ka','en','ru'])->nullable();
             $table->enum('status', ['აქტიური', 'გაუქმებული', 'შეჩერებული'])->default('აქტიური');
+            $table->boolean('agreed')->default(false);
             $table->timestamps();
         });
     }
